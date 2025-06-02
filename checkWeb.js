@@ -1,4 +1,5 @@
 import { launch } from 'puppeteer';
+import moment from 'moment'
 
 const checkWeb = async () => {
     console.log("Bắt đầu kiểm tra web...")
@@ -133,12 +134,15 @@ const checkWeb = async () => {
     await browser.close();
 
     return `
-    WEB:
-    ** ${moment().format("HH:mm:ss DD/MM/YYYY")}
-    1. Nhấn vào mua sim => Hiện nút mua ngay: ${buyNowTime.toFixed(0)}ms
-    2. Nhấn nút mua ngay =>  Hiển thị gói: ${packgeTime.toFixed(0)}ms
-    3. Nhấn nút thanh toán => Hiện nút Đặt hàng: ${orderTime.toFixed(0)}ms
-    4. Đặt hàng => Hiển thị xong trang của cổng: ${paymentTime.toFixed(0)}ms`
+    🌐 GHI NHẬT TRÌNH TỰ TRÊN WEB
+    🕒 Thời gian ghi: ${moment().format("HH:mm:ss DD/MM/YYYY")}
+
+    1️⃣ Nhấn "Mua sim" 👉 Hiện nút "Mua ngay" ⏱️ ${buyNowTime.toFixed(0)} ms
+    2️⃣ Nhấn "Mua ngay" 👉 Hiển thị danh sách gói cước ⏱️ ${packgeTime.toFixed(0)} ms
+    3️⃣ Nhấn "Thanh toán" 👉 Hiện nút "Đặt hàng" ⏱️ ${orderTime.toFixed(0)} ms
+    4️⃣ Nhấn "Đặt hàng" 👉 Trang thanh toán hiển thị xong ⏱️ ${paymentTime.toFixed(0)} ms
+    `;
+
 };
 
 export { checkWeb }

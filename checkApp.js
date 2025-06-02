@@ -1,4 +1,5 @@
 import { remote } from "webdriverio"
+import moment from 'moment'
 
 const capabilities = {
     "appium:appPackage": "itelecom.vn.myitel",
@@ -81,7 +82,7 @@ async function checkApp() {
     const webViewElement = driver.$('//android.webkit.WebView');
     await webViewElement.waitForDisplayed();
     const start7 = performance.now();
-    await driver.pause(1000);
+    await driver.pause(3000);
     await driver.terminateApp("itelecom.vn.myitel");
     await driver.deleteSession();
 
@@ -98,12 +99,14 @@ async function checkApp() {
     console.log("Kết thúc kiểm tra App...")
 
     return `
-    APP:
-    ** ${moment().format("HH:mm:ss DD/MM/YYYY")}
-    1. Nhấn vào mua sim => Hiện nút mua ngay: ${buyNowTime.toFixed(0)}ms
-    2. Nhấn nút mua ngay =>  Hiển thị gói: ${packgeTime.toFixed(0)}ms
-    3. Nhấn nút thanh toán => Hiện nút Đặt hàng: ${orderTime.toFixed(0)}ms
-    4. Đặt hàng => Hiển thị xong trang của cổng: ${paymentTime.toFixed(0)}ms`
+    📱 GHI NHẬT TRÌNH TỰ TƯƠNG TÁC ỨNG DỤNG
+    🕒 Thời gian ghi: ${moment().format("HH:mm:ss DD/MM/YYYY")}
+
+    1️⃣ Nhấn "Mua sim" 👉 Hiện nút "Mua ngay" ⏱️ ${buyNowTime.toFixed(0)} ms
+    2️⃣ Nhấn "Mua ngay" 👉 Hiển thị danh sách gói cước ⏱️ ${packgeTime.toFixed(0)} ms
+    3️⃣ Nhấn "Thanh toán" 👉 Hiện nút "Đặt hàng" ⏱️ ${orderTime.toFixed(0)} ms
+    4️⃣ Nhấn "Đặt hàng" 👉 Mở trang thanh toán của cổng ⏱️ ${paymentTime.toFixed(0)} ms
+    `;
 }
 
 export { checkApp }

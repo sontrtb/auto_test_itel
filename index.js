@@ -1,3 +1,5 @@
+import cron from 'node-cron';
+
 import { checkApp } from './checkApp.js'
 import { checkWeb } from './checkWeb.js'
 import {sendMess} from './bot-tele.js'
@@ -12,3 +14,5 @@ function run() {
 }
 
 run();
+
+cron.schedule('*/15 * * * *', run);
