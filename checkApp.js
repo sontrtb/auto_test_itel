@@ -4,7 +4,7 @@ import moment from 'moment'
 const capabilities = {
     "appium:appPackage": "itelecom.vn.myitel",
     "appium:appActivity": "com.example.my_itel_flutter.MainActivity",
-    "appium:udid": "e021ca86",
+    "appium:udid": "R58M36YRQEB",
     "appium:automationName": "uiautomator2",
     "platformName": "android",
     "appium:noReset": true,
@@ -22,7 +22,7 @@ async function checkApp() {
     console.log("Bắt đầu kiểm tra app...")
     const driver = await remote(wdOpts);
 
-    await driver.pause(5000);
+    await driver.pause(6000);
 
     const simSoElement = driver.$('~SIM số');
     await simSoElement.click();
