@@ -1,5 +1,6 @@
 import { remote } from "webdriverio"
 import moment from 'moment'
+import {createResponseTimeService} from "../services/b2c-response-time-services.js"
 
 const capabilities = {
     "appium:appPackage": "itelecom.vn.myitel",
@@ -8,7 +9,8 @@ const capabilities = {
     "appium:automationName": "uiautomator2",
     "platformName": "android",
     "appium:noReset": true,
-    "appium:autoTerminate": true
+    "appium:autoTerminate": true,
+    // "appium:autoGrantPermissions": true
 }
 
 const wdOpts = {
@@ -42,39 +44,60 @@ async function checkApp() {
     await oneThang.waitForDisplayed();
     const start3 = performance.now();
 
+     await driver.pause(500);
+
     const goiCuocElement = driver.$('~MAY35S\n35.000đ/ 1 tháng');
     await goiCuocElement.scrollIntoView();
     await goiCuocElement.click();
 
-    const screenshotCoordinates = { x: 540, y: 2140 };
+     await driver.pause(500);
+
+    const screenshotCoordinates = { x: 360, y: 1380 };
     await driver.tap(screenshotCoordinates);
+
+     await driver.pause(500);
 
     const start4 = performance.now();
     const datHangElement = driver.$('~1. Thông tin nhận hàng');
     await datHangElement.waitForDisplayed();
     const start5 = performance.now();
 
-    await driver.pause(300);
+    await driver.pause(500);
 
     const fullNameInput = driver.$('//android.widget.ScrollView/android.widget.EditText[1]');
     await fullNameInput.click();
     await fullNameInput.setValue("Họ và tên");
     await driver.hideKeyboard();
 
+     await driver.pause(500);
+
     const phoneNumberInput = driver.$('//android.widget.ScrollView/android.widget.EditText[2]');
     await phoneNumberInput.click();
     await phoneNumberInput.setValue("0123456789");
     await driver.hideKeyboard();
 
+    await driver.pause(500);
+
+    const nhanHangTaiPGD = driver.$('~Nhận tại phòng giao dịch iTel\nQuý Khách vui lòng đến PGD đã chọn để nhận hàng. iTel sẽ giữ đơn hàng của Quý Khách trong vòng 48h, sau thời điểm trên đơn hàng sẽ bị hủy.');
+    await nhanHangTaiPGD.scrollIntoView();
+    await nhanHangTaiPGD.click();
+
+    await driver.pause(500);
+
     const theManorCheck = driver.$('//android.widget.ScrollView/android.widget.RadioButton[1]');
     await theManorCheck.scrollIntoView();
     await theManorCheck.click();
+
+    await driver.pause(500);
 
     const paymentCheck = driver.$('//android.widget.ImageView[@content-desc="Thẻ thanh toán quốc tế"]/android.widget.RadioButton');
     await paymentCheck.scrollIntoView();
     await paymentCheck.click();
 
+    await driver.pause(500);
+
     const orderButton = driver.$('~Đặt hàng');
+    await orderButton.scrollIntoView();
 
     const start6 = performance.now();
     await orderButton.click();
@@ -97,6 +120,10 @@ async function checkApp() {
     const paymentTime = start7 - start6
 
     console.log("Kết thúc kiểm tra App...")
+
+    await createResponseTimeService({
+        buyNowTime, packgeTime, orderTime, paymentTime, type: "App"
+    });
 
     return `
     📱 GHI NHẬT TRÌNH TỰ TƯƠNG TÁC ỨNG DỤNG

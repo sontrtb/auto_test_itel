@@ -1,5 +1,6 @@
 import { launch } from 'puppeteer';
 import moment from 'moment'
+import {createResponseTimeService} from "../services/b2c-response-time-services.js"
 
 const checkWeb = async () => {
     console.log("Bắt đầu kiểm tra web...")
@@ -132,6 +133,10 @@ const checkWeb = async () => {
     console.log("Kết thúc kiểm tra web...")
 
     await browser.close();
+
+    await createResponseTimeService({
+        buyNowTime, packgeTime, orderTime, paymentTime, type: "WEB"
+    });
 
     return `
     🌐 GHI NHẬT TRÌNH TỰ TRÊN WEB
