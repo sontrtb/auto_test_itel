@@ -8,6 +8,6 @@ import cron from 'node-cron';
 
 await db.connect();
 
-run();
+// run();
 
 cron.schedule('*/15 * * * *', run);

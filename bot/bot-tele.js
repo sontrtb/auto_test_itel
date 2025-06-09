@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const token = '7624395023:AAHTS7nZuQhqarknD-blJ6OIKOr4oKNYy1g';
-const chatId = '5387101269';
+const chatId = '-4623547189';
 
 const proxyConfig = {
     host: '13.212.91.168',
@@ -13,19 +13,19 @@ const proxyConfig = {
     protocol: 'http'
 };
 
-function sendMess(mess) {
-    axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
-        chat_id: chatId,
-        text: mess,
-    },
-        { proxy: proxyConfig }
-    )
-        .then(res => {
-            console.log('Gửi tin nhắn thành công');
-        })
-        .catch(err => {
-            console.error('Lỗi khi gửi tin nhắn', err);
+async function sendMess(mess) {
+    try {
+        await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+            chat_id: chatId,
+            text: mess,
+        }, {
+            proxy: proxyConfig
         });
+
+        console.log('✅ Gửi tin nhắn thành công');
+    } catch (err) {
+        console.error('❌ Lỗi khi gửi tin nhắn:', err.message || err);
+    }
 }
 
 export { sendMess }
