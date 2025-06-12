@@ -34,7 +34,7 @@ async function checkApp() {
         // mua ngay xuất hiện
         const start = performance.now();
         const listSim = driver.$('~Định dạng số:');
-        await listSim.waitForDisplayed();
+        await listSim.waitForDisplayed({timeout: 60000});
         const start1 = performance.now();
 
         const muaNgayElement = driver.$('~Mua ngay');
@@ -43,8 +43,8 @@ async function checkApp() {
         await driver.pause(500);
 
         const start2 = performance.now();
-        const oneThang = driver.$('~1 tháng');
-        await oneThang.waitForDisplayed();
+        const oneThang = driver.$('~3 tháng');
+        await oneThang.waitForDisplayed({timeout: 60000});
         const start3 = performance.now();
 
         await driver.pause(500);
@@ -62,7 +62,7 @@ async function checkApp() {
 
         const start4 = performance.now();
         const datHangElement = driver.$('~1. Thông tin nhận hàng');
-        await datHangElement.waitForDisplayed();
+        await datHangElement.waitForDisplayed({timeout: 60000});
         const start5 = performance.now();
 
         await driver.pause(500);
@@ -106,7 +106,7 @@ async function checkApp() {
         await orderButton.click();
 
         const webViewElement = driver.$('//android.webkit.WebView');
-        await webViewElement.waitForDisplayed();
+        await webViewElement.waitForDisplayed({timeout: 60000});
         const start7 = performance.now();
         await driver.pause(3000);
         
