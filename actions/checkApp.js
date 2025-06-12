@@ -10,7 +10,7 @@ const capabilities = {
     "platformName": "android",
     "appium:noReset": true,
     "appium:autoTerminate": true,
-    // "appium:autoGrantPermissions": true
+    "appium:autoGrantPermissions": true
 }
 
 const wdOpts = {
