@@ -163,12 +163,6 @@ const checkWeb = async () => {
                 console.error("Lỗi khi đóng browser:", closeError.message);
             }
         }
-
-        return `
-        ❌ LỖI KIỂM TRA WEB
-        🕒 Thời gian ghi: ${moment().format("HH:mm:ss DD/MM/YYYY")}
-        🚨 Lỗi: ${error.message}
-        `;
     }
 };
 

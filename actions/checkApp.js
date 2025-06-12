@@ -161,12 +161,6 @@ async function checkApp() {
                 console.error("Lỗi khi xóa session:", sessionError.message);
             }
         }
-
-        return `
-        ❌ LỖI KIỂM TRA APP
-        🕒 Thời gian ghi: ${moment().format("HH:mm:ss DD/MM/YYYY")}
-        🚨 Lỗi: ${error.message}
-        `;
     }
 }
 
