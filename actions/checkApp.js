@@ -1,6 +1,6 @@
 import { remote } from "webdriverio"
 import moment from 'moment'
-import {createResponseTimeService} from "../services/b2c-response-time-services.js"
+import { createResponseTimeService } from "../services/b2c-response-time-services.js"
 
 const capabilities = {
     "appium:appPackage": "itelecom.vn.myitel",
@@ -23,28 +23,47 @@ const wdOpts = {
 async function checkApp() {
     console.log("Bắt đầu kiểm tra app...")
     let driver = null;
-    
+
     try {
         driver = await remote(wdOpts);
 
-        await driver.pause(6000);
+        await driver.pause(3000);
+
+        const allElement = driver.$('~Tất cả');
+        await allElement.click();
+        await driver.pause(500);
 
         const simSoElement = driver.$('~SIM số');
         await simSoElement.click();
         // mua ngay xuất hiện
         const start = performance.now();
         const listSim = driver.$('~Định dạng số:');
-        await listSim.waitForDisplayed({timeout: 60000});
+        await listSim.waitForDisplayed({ timeout: 60000 });
         const start1 = performance.now();
 
         const muaNgayElement = driver.$('~Mua ngay');
         await muaNgayElement.click();
 
-        await driver.pause(500);
+        // cuộn thêm 20 đơn vị
+        // Cuộn lên 20 pixel bằng W3C Actions
+        await driver.performActions([{
+            type: 'pointer',
+            id: 'finger1',
+            parameters: { pointerType: 'touch' },
+            actions: [
+                { type: 'pointerMove', duration: 0, x: 360, y: 800 },
+                { type: 'pointerDown', button: 0 },
+                { type: 'pointerMove', duration: 300, x: 360, y: 770 },
+                { type: 'pointerUp', button: 0 }
+            ]
+        }]);
+
+        // Giải phóng actions sau khi thực hiện
+        await driver.releaseActions();
 
         const start2 = performance.now();
-        const oneThang = driver.$('~3 tháng');
-        await oneThang.waitForDisplayed({timeout: 60000});
+        const oneThang = driver.$('~1 tháng');
+        await oneThang.waitForDisplayed({ timeout: 60000 });
         const start3 = performance.now();
 
         await driver.pause(500);
@@ -62,7 +81,7 @@ async function checkApp() {
 
         const start4 = performance.now();
         const datHangElement = driver.$('~1. Thông tin nhận hàng');
-        await datHangElement.waitForDisplayed({timeout: 60000});
+        await datHangElement.waitForDisplayed({ timeout: 60000 });
         const start5 = performance.now();
 
         await driver.pause(500);
@@ -106,10 +125,10 @@ async function checkApp() {
         await orderButton.click();
 
         const webViewElement = driver.$('//android.webkit.WebView');
-        await webViewElement.waitForDisplayed({timeout: 60000});
+        await webViewElement.waitForDisplayed({ timeout: 60000 });
         const start7 = performance.now();
         await driver.pause(3000);
-        
+
         // Đóng app và session
         await driver.terminateApp("itelecom.vn.myitel");
         await driver.deleteSession();
@@ -125,12 +144,7 @@ async function checkApp() {
         const paymentTime = start7 - start6
 
         console.log("Kết thúc kiểm tra App...")
-
-        await createResponseTimeService({
-            buyNowTime, packgeTime, orderTime, paymentTime, type: "App"
-        });
-
-        return `
+        console.log(`
         📱 GHI NHẬT TRÌNH TỰ TƯƠNG TÁC ỨNG DỤNG
         🕒 Thời gian ghi: ${moment().format("HH:mm:ss DD/MM/YYYY")}
 
@@ -138,11 +152,17 @@ async function checkApp() {
         2️⃣ Nhấn "Mua ngay" 👉 Hiển thị danh sách gói cước ⏱️ ${packgeTime.toFixed(0)} ms
         3️⃣ Nhấn "Thanh toán" 👉 Hiện nút "Đặt hàng" ⏱️ ${orderTime.toFixed(0)} ms
         4️⃣ Nhấn "Đặt hàng" 👉 Mở trang thanh toán của cổng ⏱️ ${paymentTime.toFixed(0)} ms
-        `;
+        `);
+
+        await createResponseTimeService({
+            buyNowTime, packgeTime, orderTime, paymentTime, type: "App"
+        });
+
+
 
     } catch (error) {
         console.error("Lỗi trong quá trình kiểm tra app:", error.message);
-        
+
         // Đảm bảo đóng app và session ngay cả khi có lỗi
         if (driver) {
             try {
@@ -152,7 +172,7 @@ async function checkApp() {
             } catch (terminateError) {
                 console.error("Lỗi khi đóng app:", terminateError.message);
             }
-            
+
             try {
                 // Cố gắng xóa session
                 await driver.deleteSession();
