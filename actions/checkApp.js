@@ -144,7 +144,12 @@ async function checkApp() {
         const paymentTime = start7 - start6
 
         console.log("Kết thúc kiểm tra App...")
-        console.log(`
+
+        await createResponseTimeService({
+            buyNowTime, packgeTime, orderTime, paymentTime, type: "App"
+        });
+
+        return `
         📱 GHI NHẬT TRÌNH TỰ TƯƠNG TÁC ỨNG DỤNG
         🕒 Thời gian ghi: ${moment().format("HH:mm:ss DD/MM/YYYY")}
 
@@ -152,11 +157,7 @@ async function checkApp() {
         2️⃣ Nhấn "Mua ngay" 👉 Hiển thị danh sách gói cước ⏱️ ${packgeTime.toFixed(0)} ms
         3️⃣ Nhấn "Thanh toán" 👉 Hiện nút "Đặt hàng" ⏱️ ${orderTime.toFixed(0)} ms
         4️⃣ Nhấn "Đặt hàng" 👉 Mở trang thanh toán của cổng ⏱️ ${paymentTime.toFixed(0)} ms
-        `);
-
-        await createResponseTimeService({
-            buyNowTime, packgeTime, orderTime, paymentTime, type: "App"
-        });
+        `;
 
 
 
